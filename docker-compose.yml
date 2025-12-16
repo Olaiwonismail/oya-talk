@@ -1,0 +1,32 @@
+version: "3.9"
+
+services:
+  backend:
+    build:
+      context: .
+      target: backend
+    environment:
+      _DATABASE_URL: ${_DATABASE_URL:-sqlite:////data/app.db}
+      FIREBASE_CREDENTIALS_JSON: ${FIREBASE_CREDENTIALS_JSON:-}
+      SPITCH_API_KEY: ${SPITCH_API_KEY:-}
+      SPITCH_API_URL: ${SPITCH_API_URL:-https://api.spitch.app/v1/transcribe}
+    ports:
+      - "8000:8000"
+    volumes:
+      - backend_data:/data
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: .
+      target: frontend
+    environment:
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-http://backend:8000}
+    depends_on:
+      - backend
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+
+volumes:
+  backend_data:

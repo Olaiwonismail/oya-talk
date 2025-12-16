@@ -40,6 +40,41 @@ Oyatalk is a **web-based language learning app** that helps users learn **Englis
 
 ---
 
+## 🐳 Docker (frontend + backend)
+
+1. Create a `.env` file in the repo root with the values your deployment needs (defaults shown):
+
+	```env
+	NEXT_PUBLIC_API_URL=http://backend:8000
+	_DATABASE_URL=sqlite:////data/app.db
+	FIREBASE_CREDENTIALS_JSON=<paste your Firebase service-account JSON as a single line>
+	SPITCH_API_KEY=
+	SPITCH_API_URL=https://api.spitch.app/v1/transcribe
+	```
+
+2. Build the images (targets `frontend` and `backend` live in the shared Dockerfile):
+
+	```bash
+	docker compose build
+	```
+
+3. Start both services:
+
+	```bash
+	docker compose up -d
+	```
+
+4. Access the apps:
+	* Frontend: http://localhost:3000
+	* Backend: http://localhost:8000/health
+
+5. Notes:
+	* Default `_DATABASE_URL` uses SQLite stored in the `backend_data` volume; set a Postgres URL when ready.
+	* `FIREBASE_CREDENTIALS_JSON` must be valid JSON (minify the service account file or wrap it in single quotes).
+	* Rebuild after dependency changes: `docker compose build --no-cache`.
+
+---
+
 ## 📖 Example Lessons
 
 * **English**: *Hello, how are you?*, *Where is the bathroom?*, *I don’t understand.*
