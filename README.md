@@ -1,4 +1,6 @@
 
+[![Live API](https://img.shields.io/badge/Live%20API-oya--speak--r.onrender.com-46E3B7?logo=render&logoColor=white)](https://oya-speak-r.onrender.com/health)
+
 # 🗣️ Oyatalk
 
 Oyatalk is a **web-based language learning app** that helps users learn **English and Nigerian languages (Yoruba, Igbo, Hausa)** through **speech-driven practice**. Built with modern web technologies and powered by the **Spitch speech-to-text API**, it provides real-time feedback on pronunciation and fluency, making language learning **fun, practical, and accessible**.
@@ -36,7 +38,20 @@ Oyatalk is a **web-based language learning app** that helps users learn **Englis
 * **Backend**: FastAPI (Python) with JWT Auth
 * **Database**: PostgreSQL (via SQLAlchemy / Supabase)
 * **Speech-to-Text**: [Spitch API](https://spitch.app)
-* **Deployment**: Vercel (frontend) + Render/Heroku (backend)
+* **Deployment**: Vercel (frontend) + Render (backend)
+
+---
+
+## 🏗️ Architecture
+
+```mermaid
+flowchart LR
+	U[User Browser] --> F[Next.js Frontend]
+	F -->|JWT + REST| B[FastAPI Backend]
+	B -->|SQLAlchemy| D[(PostgreSQL)]
+	B -->|Auth + User Data| FB[Firebase]
+	B -->|Speech Transcription Requests| S[Spitch API]
+```
 
 ---
 
@@ -46,7 +61,7 @@ Oyatalk is a **web-based language learning app** that helps users learn **Englis
 
 	```env
 	NEXT_PUBLIC_API_URL=http://backend:8000
-	_DATABASE_URL=sqlite:////data/app.db
+	_DATABASE_URL=postgresql://postgres:postgres@db:5432/oyatalk
 	FIREBASE_CREDENTIALS_JSON=<paste your Firebase service-account JSON as a single line>
 	SPITCH_API_KEY=
 	SPITCH_API_URL=https://api.spitch.app/v1/transcribe
@@ -69,7 +84,7 @@ Oyatalk is a **web-based language learning app** that helps users learn **Englis
 	* Backend: http://localhost:8000/health
 
 5. Notes:
-	* Default `_DATABASE_URL` uses SQLite stored in the `backend_data` volume; set a Postgres URL when ready.
+	* Default `_DATABASE_URL` is PostgreSQL. Set credentials/host for your environment.
 	* `FIREBASE_CREDENTIALS_JSON` must be valid JSON (minify the service account file or wrap it in single quotes).
 	* Rebuild after dependency changes: `docker compose build --no-cache`.
 
@@ -95,7 +110,7 @@ Oyatalk is a **web-based language learning app** that helps users learn **Englis
 
 ## 🚧 Status
 
-This is a **hackathon MVP**. Future improvements include:
+**v1.0 - actively maintained.** Planned improvements include:
 
 * Phoneme-level pronunciation tips.
 * Conversation simulations (e.g., doctor–patient roleplay).
