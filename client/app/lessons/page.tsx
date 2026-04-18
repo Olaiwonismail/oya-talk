@@ -222,7 +222,7 @@ export default function LessonsPage() {
                   <div className="flex items-start justify-between">
                     <div className="flex flex-wrap items-center gap-2">
                       <span className="text-lg">{getLanguageFlag(lesson.language)}</span>
-                      <Badge variant="secondary">{getLanguageLabel(lesson.language)}</Badge>
+                      <Badge className={getLevelColor(lesson.level)}>{getLanguageLabel(lesson.language)}</Badge>
                       <Badge className={getLevelColor(lesson.level)}>{lesson.level}</Badge>
                       {lesson.completed && (
                         <Badge variant="outline" className="text-green-600 border-green-600">
