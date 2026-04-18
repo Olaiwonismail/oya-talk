@@ -1,6 +1,4 @@
 
-[![Live API](https://img.shields.io/badge/Live%20API-oya--speak--r.onrender.com-46E3B7?logo=render&logoColor=white)](https://oya-speak-r.onrender.com/health)
-
 # 🗣️ Oyatalk
 
 Oyatalk is a **web-based language learning app** that helps users learn **English and Nigerian languages (Yoruba, Igbo, Hausa)** through **speech-driven practice**. Built with modern web technologies and powered by the **Spitch speech-to-text API**, it provides real-time feedback on pronunciation and fluency, making language learning **fun, practical, and accessible**.
