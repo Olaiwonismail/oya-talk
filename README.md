@@ -8,6 +8,11 @@ Oyatalk is a **web-based language learning app** that helps users learn **Englis
 ## Demo
 
 
+https://github.com/user-attachments/assets/44c5eb7c-c1f6-4c3b-b091-767f3f207ef2
+
+
+
+
 --- 
 
 ## 🚀 Features
