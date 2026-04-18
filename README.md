@@ -5,6 +5,13 @@
 
 Oyatalk is a **web-based language learning app** that helps users learn **English and Nigerian languages (Yoruba, Igbo, Hausa)** through **speech-driven practice**. Built with modern web technologies and powered by the **Spitch speech-to-text API**, it provides real-time feedback on pronunciation and fluency, making language learning **fun, practical, and accessible**.
 
+---
+
+## Demo
+
+<img width="1000" height="563" alt="Oyatalk Demo" src="https://github.com/user-attachments/assets/87520852-bbaa-4300-acde-905ab78255ed" />
+
+
 --- 
 
 ## 🚀 Features
