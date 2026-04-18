@@ -7,10 +7,7 @@ Oyatalk is a **web-based language learning app** that helps users learn **Englis
 
 ## Demo
 
-<img width="720" height="405" alt="studyy (1)" src="https://github.com/user-attachments/assets/888df242-6d27-4d27-b721-5d15d7b25e38" />
-
-
-
+<img width="1000" height="563" alt="oyaooo (online-video-cutter com)" src="https://github.com/user-attachments/assets/9a05cd95-4cb7-4dcf-86be-f5be71581248" />
 
 
 --- 
