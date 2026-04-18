@@ -102,6 +102,21 @@ export default function LessonsPage() {
     }
   }
 
+  const getLanguageLabel = (lang: string) => {
+    switch (lang) {
+      case "en":
+        return "English"
+      case "yo":
+        return "Yoruba"
+      case "ig":
+        return "Igbo"
+      case "ha":
+        return "Hausa"
+      default:
+        return lang
+    }
+  }
+
   if (authLoading) {
     return (
       <div className="min-h-screen bg-background">
@@ -205,8 +220,9 @@ export default function LessonsPage() {
               <Card key={lesson.id} className="hover:shadow-lg transition-shadow">
                 <CardHeader>
                   <div className="flex items-start justify-between">
-                    <div className="flex items-center gap-2">
+                    <div className="flex flex-wrap items-center gap-2">
                       <span className="text-lg">{getLanguageFlag(lesson.language)}</span>
+                      <Badge variant="secondary">{getLanguageLabel(lesson.language)}</Badge>
                       <Badge className={getLevelColor(lesson.level)}>{lesson.level}</Badge>
                       {lesson.completed && (
                         <Badge variant="outline" className="text-green-600 border-green-600">
