@@ -11,8 +11,15 @@ export interface Lesson {
   id: number
   title: string
   language: string
-  difficulty: string
+  level?: string
+  difficulty?: string
   description?: string
+  created_at?: string
+}
+
+export interface LessonDetailResponse {
+  lesson: Lesson
+  items: LessonItem[]
 }
 
 export interface AttemptRequest {

@@ -1,3 +1,5 @@
+import type { LessonDetailResponse } from "@/types/api"
+
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://oya-speak-r.onrender.com"
 
 console.log("[v0] API Base URL:", API_BASE_URL)
@@ -61,8 +63,7 @@ export class ApiClient {
     return this.request(url)
   }
 
-  async getLessonItems(lessonId: number) {
-    // Changed to number
+  async getLessonItems(lessonId: number): Promise<LessonDetailResponse> {
     return this.request(`/lessons/${lessonId}/items`)
   }
 

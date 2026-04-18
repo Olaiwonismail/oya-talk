@@ -36,14 +36,18 @@ async def get_lesson_items(
     user: User = Depends(get_current_user)
 ):
     try:
+        lesson = db.query(Lesson).filter(Lesson.id == lesson_id).first()
+        if not lesson:
+            raise HTTPException(status_code=404, detail="Lesson not found")
+
         lesson_items = db.query(LessonItem).filter(
             LessonItem.lesson_id == lesson_id
         ).all()
-        
-        if not lesson_items:
-            raise HTTPException(status_code=404, detail="Lesson not found")
-            
-        return lesson_items
+
+        return {
+            "lesson": lesson,
+            "items": lesson_items,
+        }
     except HTTPException:
         raise
     except Exception as e:

@@ -89,6 +89,21 @@ export default function LessonPage() {
   const currentItem = lessonItems[currentItemIndex]
   const progress = lessonItems.length > 0 ? ((currentItemIndex + 1) / lessonItems.length) * 100 : 0
 
+  const lessonLanguageLabel = (language?: string) => {
+    switch (language) {
+      case "en":
+        return "English"
+      case "yo":
+        return "Yoruba"
+      case "ig":
+        return "Igbo"
+      case "ha":
+        return "Hausa"
+      default:
+        return language || "Unknown"
+    }
+  }
+
   useEffect(() => {
     if (lessonId && user) {
       fetchLessonItems()
@@ -108,28 +123,15 @@ export default function LessonPage() {
 
       console.log("[v0] Converted lesson ID to number:", lessonIdNumber)
 
-      const [itemsData, lessonsData] = await Promise.all([
-        apiClient.getLessonItems(lessonIdNumber),
-        apiClient.getLessons(),
-      ])
+      const data = await apiClient.getLessonItems(lessonIdNumber)
 
-      console.log("[v0] Lesson items fetched successfully:", itemsData)
-      console.log("[v0] All lessons fetched:", lessonsData)
+      console.log("[v0] Lesson detail fetched successfully:", data)
 
-      const items = Array.isArray(itemsData) ? itemsData : []
+      const items = Array.isArray(data.items) ? data.items : []
       console.log("[v0] Processed lesson items:", items)
       setLessonItems(items)
 
-      const allLessons = Array.isArray(lessonsData) ? lessonsData : []
-      const currentLesson = allLessons.find((l) => l.id.toString() === lessonId)
-      console.log("[v0] Current lesson found:", currentLesson)
-      if (!currentLesson) {
-        setLesson(null)
-        setError("Lesson not found.")
-        return
-      }
-
-      setLesson(currentLesson)
+      setLesson(data.lesson)
 
       if (items.length === 0) {
         setError("This lesson does not have any items yet.")
@@ -303,11 +305,15 @@ export default function LessonPage() {
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <CardTitle className="text-2xl">Practice Speaking</CardTitle>
-                  {currentItem.difficulty && <Badge variant="outline">Difficulty: {currentItem.difficulty}/5</Badge>}
+                  <div className="flex items-center gap-2">
+                    <Badge variant="outline">{lessonLanguageLabel(lesson?.language)}</Badge>
+                    {currentItem.difficulty && <Badge variant="outline">Difficulty: {currentItem.difficulty}/5</Badge>}
+                  </div>
                 </div>
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="text-center">
+                  {lesson?.title && <p className="text-sm text-foreground/60 mb-2">{lesson.title}</p>}
                   <h3 className="text-lg font-medium text-foreground/80 mb-4">Read this text aloud:</h3>
                   <div className="bg-muted/30 p-6 rounded-lg">
                     <p className="text-2xl text-foreground font-medium leading-relaxed">{currentItem.text}</p>
@@ -315,14 +321,10 @@ export default function LessonPage() {
                 </div>
 
                 <div className="text-center">
-                  <Button
-  onClick={() => playLessonText(currentItem.text, lesson.language)}
-  variant="outline"
-  disabled={isPlayingReference}
->
-  <Volume2 className="mr-2 h-4 w-4" />
-  {isPlayingReference ? "Playing..." : "Listen to Reference"}
-</Button>
+                  <Button onClick={() => playLessonText(currentItem.text, lesson?.language || "en")} variant="outline" disabled={isPlayingReference}>
+                    <Volume2 className="mr-2 h-4 w-4" />
+                    {isPlayingReference ? "Playing..." : "Listen to Reference"}
+                  </Button>
 
                 </div>
 
@@ -360,12 +362,12 @@ export default function LessonPage() {
 
             {showFeedback && speechResult && (
               <SpeechFeedback
-  overallScore={speechResult.score}
-  wordScores={speechResult.word_scores}
-  suggestions={Array.isArray(speechResult.suggestions) ? speechResult.suggestions : [speechResult.suggestions]}
-  targetText={currentItem.text}
-  transcript={speechResult.transcript}
-/>
+                overallScore={speechResult.score}
+                wordScores={speechResult.word_scores}
+                suggestions={Array.isArray(speechResult.suggestions) ? speechResult.suggestions : [speechResult.suggestions]}
+                targetText={currentItem.text}
+                transcript={speechResult.transcript}
+              />
 
             )}
 
