@@ -32,6 +32,7 @@ export default function LessonsPage() {
   const { user, loading: authLoading } = useAuth()
   const [lessons, setLessons] = useState<Lesson[]>([])
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
   const [searchTerm, setSearchTerm] = useState("")
   const [selectedLanguage, setSelectedLanguage] = useState<string>("all")
   const [selectedLevel, setSelectedLevel] = useState<string>("all")
@@ -49,6 +50,7 @@ export default function LessonsPage() {
   const fetchLessons = async () => {
     try {
       setLoading(true)
+      setError(null)
       console.log("[v0] Starting lessons fetch")
       const params: any = {}
       if (selectedLanguage !== "all") params.language = selectedLanguage
@@ -59,68 +61,8 @@ export default function LessonsPage() {
       setLessons(Array.isArray(data) ? data : [])
     } catch (error) {
       console.error("Failed to fetch lessons:", error)
-      setLessons([
-        {
-          id: "1",
-          title: "Basic Greetings",
-          description: "Learn essential greetings and introductions",
-          language: "en",
-          level: "beginner",
-          duration: 15,
-          items_count: 10,
-          completed: false,
-          rating: 4.8,
-          enrolled_count: 1250,
-        },
-        {
-          id: "2",
-          title: "Yoruba Fundamentals",
-          description: "Master basic Yoruba pronunciation and common phrases",
-          language: "yo",
-          level: "beginner",
-          duration: 20,
-          items_count: 15,
-          completed: true,
-          rating: 4.9,
-          enrolled_count: 890,
-        },
-        {
-          id: "3",
-          title: "Business English",
-          description: "Professional communication and business vocabulary",
-          language: "en",
-          level: "intermediate",
-          duration: 30,
-          items_count: 25,
-          completed: false,
-          rating: 4.7,
-          enrolled_count: 2100,
-        },
-        {
-          id: "4",
-          title: "Igbo Conversations",
-          description: "Practice everyday conversations in Igbo",
-          language: "ig",
-          level: "intermediate",
-          duration: 25,
-          items_count: 20,
-          completed: false,
-          rating: 4.6,
-          enrolled_count: 650,
-        },
-        {
-          id: "5",
-          title: "Advanced Hausa",
-          description: "Complex grammar and advanced vocabulary",
-          language: "ha",
-          level: "advanced",
-          duration: 40,
-          items_count: 30,
-          completed: false,
-          rating: 4.8,
-          enrolled_count: 420,
-        },
-      ])
+      setLessons([])
+      setError("Failed to load lessons. Please try again.")
     } finally {
       setLoading(false)
     }
@@ -250,6 +192,13 @@ export default function LessonsPage() {
               </Card>
             ))}
           </div>
+        ) : error ? (
+          <div className="text-center py-12">
+            <BookOpen className="h-12 w-12 text-foreground/30 mx-auto mb-4" />
+            <h3 className="text-lg font-semibold text-foreground mb-2">Could not load lessons</h3>
+            <p className="text-foreground/70 mb-4">{error}</p>
+            <Button onClick={fetchLessons}>Try Again</Button>
+          </div>
         ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredLessons.map((lesson) => (
@@ -306,7 +255,7 @@ export default function LessonsPage() {
           </div>
         )}
 
-        {filteredLessons.length === 0 && !loading && (
+        {filteredLessons.length === 0 && !loading && !error && (
           <div className="text-center py-12">
             <BookOpen className="h-12 w-12 text-foreground/30 mx-auto mb-4" />
             <h3 className="text-lg font-semibold text-foreground mb-2">No lessons found</h3>

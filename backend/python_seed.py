@@ -1,11 +1,24 @@
 # seed_lessons_with_expected_answers.py
+import os
 from sqlalchemy.orm import Session
 from sqlalchemy import create_engine
 from datetime import datetime
 from app.db.models import Lesson, LessonItem
 
-# Database connection - update with your actual connection string
-DATABASE_URL = "postgresql+psycopg2://avnadmin:AVNS_-zzabn4VfJeBLUqyo-x@pg-d18d6aa-olaa14157-2604.e.aivencloud.com:21496/defaultdb?sslmode=require"  # Replace with your actual DB URL
+# Use the same env var the backend already expects.
+DATABASE_URL = os.getenv("_DATABASE_URL")
+if not DATABASE_URL:
+    raise RuntimeError("_DATABASE_URL is not set. Export it before running the seeder.")
+
+if DATABASE_URL.startswith("postgres://"):
+    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql+psycopg2://", 1)
+elif DATABASE_URL.startswith("postgresql://"):
+    DATABASE_URL = DATABASE_URL.replace("postgresql://", "postgresql+psycopg2://", 1)
+
+if "sslmode=" not in DATABASE_URL:
+    separator = "&" if "?" in DATABASE_URL else "?"
+    DATABASE_URL = f"{DATABASE_URL}{separator}sslmode=require"
+
 engine = create_engine(DATABASE_URL)
 
 def seed_lessons_with_expected_answers():

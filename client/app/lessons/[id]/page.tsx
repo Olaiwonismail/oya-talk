@@ -74,11 +74,12 @@ export default function LessonPage() {
   const params = useParams()
   const router = useRouter()
   const { t } = useLanguage()
-  const { user } = useAuth()
+  const { user, loading: authLoading } = useAuth()
   const [lessonItems, setLessonItems] = useState<LessonItem[]>([])
   const [lesson, setLesson] = useState<Lesson | null>(null)
   const [currentItemIndex, setCurrentItemIndex] = useState(0)
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
   const [processing, setProcessing] = useState(false)
   const [speechResult, setSpeechResult] = useState<SpeechResult | null>(null)
   const [showFeedback, setShowFeedback] = useState(false)
@@ -89,14 +90,15 @@ export default function LessonPage() {
   const progress = lessonItems.length > 0 ? ((currentItemIndex + 1) / lessonItems.length) * 100 : 0
 
   useEffect(() => {
-    if (lessonId) {
+    if (lessonId && user) {
       fetchLessonItems()
     }
-  }, [lessonId])
+  }, [lessonId, user])
 
   const fetchLessonItems = async () => {
     try {
       setLoading(true)
+      setError(null)
       console.log("[v0] Fetching lesson items for lesson ID:", lessonId)
 
       const lessonIdNumber = Number.parseInt(lessonId, 10)
@@ -121,45 +123,22 @@ export default function LessonPage() {
       const allLessons = Array.isArray(lessonsData) ? lessonsData : []
       const currentLesson = allLessons.find((l) => l.id.toString() === lessonId)
       console.log("[v0] Current lesson found:", currentLesson)
-      setLesson(currentLesson || null)
+      if (!currentLesson) {
+        setLesson(null)
+        setError("Lesson not found.")
+        return
+      }
+
+      setLesson(currentLesson)
+
+      if (items.length === 0) {
+        setError("This lesson does not have any items yet.")
+      }
     } catch (error) {
       console.error("[v0] Failed to fetch lesson items:", error)
-      setLessonItems([
-        {
-          id: 1,
-          text: "Hello, how are you today?",
-          difficulty: 1,
-          tips: ["Focus on clear pronunciation of each word", "Pay attention to the rising intonation in questions"],
-        },
-        {
-          id: 2,
-          text: "I am fine, thank you very much.",
-          difficulty: 1,
-          tips: ['Emphasize "very" for natural expression', "Keep a steady pace throughout"],
-        },
-        {
-          id: 3,
-          text: "What is your name and where are you from?",
-          difficulty: 2,
-          tips: [
-            "This is a compound question - pause slightly between parts",
-            'Stress the question words "what" and "where"',
-          ],
-        },
-        {
-          id: 4,
-          text: "My name is Sarah and I am from Lagos, Nigeria.",
-          difficulty: 2,
-          tips: ["Practice the rhythm of this longer sentence", "Clearly pronounce place names"],
-        },
-        {
-          id: 5,
-          text: "It is very nice to meet you. I hope we can be good friends.",
-          difficulty: 3,
-          tips: ["This is a more complex sentence with multiple clauses", "Express genuine warmth in your tone"],
-        },
-      ])
-      setLesson({ id: Number.parseInt(lessonId), title: "Demo Lesson", language: "en", level: "beginner" })
+      setLessonItems([])
+      setLesson(null)
+      setError("Failed to load lesson content. Please try again.")
     } finally {
       setLoading(false)
     }
@@ -247,6 +226,18 @@ export default function LessonPage() {
     setShowFeedback(false)
   }
 
+  if (authLoading) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Navbar />
+        <div className="max-w-4xl mx-auto px-4 py-20 text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+          <p className="mt-4 text-foreground/70">Loading lesson...</p>
+        </div>
+      </div>
+    )
+  }
+
   if (!user) {
     return (
       <div className="min-h-screen bg-background">
@@ -255,6 +246,21 @@ export default function LessonPage() {
           <h1 className="text-3xl font-bold text-foreground mb-4">Please log in to access lessons</h1>
           <Button asChild>
             <Link href="/login">Login</Link>
+          </Button>
+        </div>
+      </div>
+    )
+  }
+
+  if (error && lessonItems.length === 0) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Navbar />
+        <div className="max-w-4xl mx-auto px-4 py-20 text-center">
+          <h1 className="text-3xl font-bold text-foreground mb-4">{error}</h1>
+          <p className="text-foreground/70 mb-6">Go back to the lessons list and pick another lesson.</p>
+          <Button asChild>
+            <Link href="/lessons">Back to Lessons</Link>
           </Button>
         </div>
       </div>

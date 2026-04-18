@@ -84,6 +84,11 @@ export const translations = {
     "auth.error.weak_password": "Password should be at least 6 characters",
     "auth.success.account_created": "Account created successfully!",
     "auth.success.signed_in": "Welcome back!",
+    "auth.password_requirements": "Password requirements:",
+    "auth.password_req.length": "At least 8 characters",
+    "auth.password_req.uppercase": "At least one uppercase letter",
+    "auth.password_req.lowercase": "At least one lowercase letter",
+    "auth.password_req.number": "At least one number",
 
     // Dashboard
     "dashboard.welcome": "Welcome back",
@@ -228,6 +233,11 @@ export const translations = {
     "auth.have_account": "Ni akọọlẹ tẹlẹ?",
     "auth.signing_in": "N wọle...",
     "auth.creating_account": "N ṣẹda akọọlẹ...",
+    "auth.password_requirements": "Awọn ibeere ọrọ igbaniwọle:",
+    "auth.password_req.length": "O kere ju awọn ohun kikọ 8",
+    "auth.password_req.uppercase": "O kere ju lẹta nla kan",
+    "auth.password_req.lowercase": "O kere ju lẹta kekere kan",
+    "auth.password_req.number": "O kere ju nọmba kan",
 
     // Dashboard
     "dashboard.welcome": "Kaabo pada",
@@ -320,6 +330,11 @@ export const translations = {
     "auth.have_account": "Nwere akaụntụ?",
     "auth.signing_in": "Na-abanye...",
     "auth.creating_account": "Na-emepụta akaụntụ...",
+    "auth.password_requirements": "Ihe paswọọdụ ga-ezute:",
+    "auth.password_req.length": "Opekempe mkpụrụedemede 8",
+    "auth.password_req.uppercase": "Opekempe otu mkpụrụedemede ukwu",
+    "auth.password_req.lowercase": "Opekempe otu mkpụrụedemede nta",
+    "auth.password_req.number": "Opekempe otu nọmba",
 
     // Dashboard
     "dashboard.welcome": "Nnọọ azụ",
@@ -414,6 +429,11 @@ export const translations = {
     "auth.have_account": "Kuna da asusu?",
     "auth.signing_in": "Ana shigawa...",
     "auth.creating_account": "Ana ƙirƙirar asusu...",
+    "auth.password_requirements": "Sharuɗɗan kalmar sirri:",
+    "auth.password_req.length": "Aƙalla haruffa 8",
+    "auth.password_req.uppercase": "Aƙalla babban harafi guda",
+    "auth.password_req.lowercase": "Aƙalla ƙaramin harafi guda",
+    "auth.password_req.number": "Aƙalla lamba guda",
 
     // Dashboard
     "dashboard.welcome": "Maraba da komawa",
